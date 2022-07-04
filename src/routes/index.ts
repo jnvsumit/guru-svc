@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import config from "../config";
-import paragraphRouter from "./paragraph.route";
+import MediaRoute from "./media.route";
 
 const router = Router();
 
@@ -11,5 +11,5 @@ router.get("/", (req: Request, res: Response)=>{
    }) 
 });
 
-router.use("/paragraph", paragraphRouter);
+router.use("/media", MediaRoute);
 export default router;

@@ -1,9 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
-const ParagraphSchema = new Schema({
-    paragraphTitle: String,
-    paragraphId: String,
+const MediaSchema = new Schema({
+    mediaTitle: String,
+    mediaId: String,
     s3Url: String,
+    mimeType: String,
     sequenceNo: { 
         type: Number,
         min: [0, "Sequence number can't be less than 0" ],
@@ -18,4 +19,4 @@ const ParagraphSchema = new Schema({
     timestamps: true
 });
 
-export default mongoose.model("paragraph", ParagraphSchema);
+export default mongoose.model("media", MediaSchema);

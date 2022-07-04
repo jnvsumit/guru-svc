@@ -1,10 +1,12 @@
 import express from 'express';
+import morgan from 'morgan';
 import routes from './src/routes';
 import { connectDb } from './src/datacenter/connectDB';
 
 const app = express();
 const port:number = (process.env.PORT || 3000) as number;
 
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 app.use(express.json());
 express.urlencoded({extended: false});
 app.use("/", routes);
