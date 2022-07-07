@@ -20,7 +20,7 @@ class MediaController {
             const id: string = (req.query.mediaId || "") as string;
             const media = await getMediaById(id);
             return res.status(200).json({
-                success: false,
+                success: true,
                 message: "Successful",
                 data: media
             });
@@ -54,9 +54,18 @@ class MediaController {
     public async updateMediaById(req: Request, res: Response){
         try{
             const id: string = (req.query.mediaId || "") as string;
-            const { mediaTitle, seqNo, del, mediaContent } = req.body;
+            const { mediaTitle, sequenceNo, del } = req.body;
+            let mediaContent: any;
+            let mimeType: string = "text/plain";
+
+            if(req.body.mediaContent && typeof req.body.mediaContent === "string"){
+                mediaContent = req.body.mediaContent;
+            }else if(req.file){
+                mediaContent = req.file.buffer;
+                mimeType = req.file.mimetype;
+            }
             
-            const media = await updateMediaById(id, mediaTitle, seqNo, mediaContent, del);
+            const media = await updateMediaById(id, mediaTitle, sequenceNo, mediaContent, del, mimeType);
             return res.status(200).json({
                 success: true,
                 message: "Successful",
@@ -90,7 +99,7 @@ class MediaController {
             const bucketName: string = BUCKET_NAME;
             const media = await postMedia(mediaContent, bucketName, seqNo, mediaTitle, mimeType, mediaType, fileName);
             return res.status(200).json({
-                success: false,
+                success: true,
                 message: "Successful",
                 data: media
             });

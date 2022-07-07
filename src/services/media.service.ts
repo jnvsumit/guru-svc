@@ -11,7 +11,7 @@ export const getMediaList = async (skip: number, limit: number, status: string) 
     return Media.find({ status }).skip(skip).limit(limit);
 }
 
-export const updateMediaById = async (mediaId: string, mediaTitle: string, seqNo: number, mediaContent: string, del: boolean) =>{
+export const updateMediaById = async (mediaId: string, mediaTitle: string, seqNo: number, mediaContent: string, del: boolean, mimeType: string) =>{
     const updateParams: {[key: string]: string | number} = {};
 
     if(mediaTitle){
@@ -26,6 +26,9 @@ export const updateMediaById = async (mediaId: string, mediaTitle: string, seqNo
         updateParams["status"] = "inactive";
     }
 
+    if(mimeType){
+        updateParams["mimeType"] = mimeType;
+    }
     
     const response = await Media.findOne({
         mediaId

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import config from "../config";
 import MediaRoute from "./media.route";
+import AuthRoute from "./auth.route";
 
 const router = Router();
 
@@ -11,5 +12,7 @@ router.get("/", (req: Request, res: Response)=>{
    }) 
 });
 
+
+router.use("/auth", AuthRoute);
 router.use("/media", MediaRoute);
 export default router;
