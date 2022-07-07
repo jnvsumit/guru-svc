@@ -36,9 +36,10 @@ class MediaController {
         try{
             const skip: number = (req.query.skip || 0) as number;
             const limit: number = (req.query.limit || 30) as number;
-            const medias = await getMediaList(skip, limit);
+            const status: string = (req.query.status || "active") as string;
+            const medias = await getMediaList(skip, limit, status);
             return res.status(200).json({
-                success: false,
+                success: true,
                 message: "Successful",
                 data: medias
             });
@@ -54,9 +55,10 @@ class MediaController {
         try{
             const id: string = (req.query.mediaId || "") as string;
             const { mediaTitle, seqNo, del, mediaContent } = req.body;
-            const media = await updateMediaById(id, mediaTitle, seqNo, mediaContent, del === "true");
+            
+            const media = await updateMediaById(id, mediaTitle, seqNo, mediaContent, del);
             return res.status(200).json({
-                success: false,
+                success: true,
                 message: "Successful",
                 data: media
             });
@@ -73,18 +75,20 @@ class MediaController {
             const {mediaTitle, seqNo } = req.body;
             let mimeType: string = "text/plain";
             let mediaContent: any;
-            let fileName: string = "";
+            let fileName: string = "text.txt";
+            let mediaType: string = "text";
 
             if(req.body.mediaContent && typeof req.body.mediaContent === "string"){
                 mediaContent = req.body.mediaContent;
             }else if(req.file){
+                mediaType = "image";
                 mediaContent = req.file.buffer;
                 mimeType = req.file.mimetype;
                 fileName = req.file.filename;
             }
 
             const bucketName: string = BUCKET_NAME;
-            const media = await postMedia(mediaContent, bucketName, seqNo, mediaTitle, mimeType, fileName);
+            const media = await postMedia(mediaContent, bucketName, seqNo, mediaTitle, mimeType, mediaType, fileName);
             return res.status(200).json({
                 success: false,
                 message: "Successful",

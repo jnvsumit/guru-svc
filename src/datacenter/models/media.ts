@@ -5,6 +5,7 @@ const MediaSchema = new Schema({
     mediaId: String,
     s3Url: String,
     mimeType: String,
+    mediaType: String,
     sequenceNo: { 
         type: Number,
         min: [0, "Sequence number can't be less than 0" ],

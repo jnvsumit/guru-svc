@@ -7,8 +7,8 @@ export const getMediaById = async (mediaId: string) =>{
     return Media.findOne({mediaId});
 }
 
-export const getMediaList = async (skip: number, limit: number) =>{
-    return Media.find().skip(skip).limit(limit);
+export const getMediaList = async (skip: number, limit: number, status: string) =>{
+    return Media.find({ status }).skip(skip).limit(limit);
 }
 
 export const updateMediaById = async (mediaId: string, mediaTitle: string, seqNo: number, mediaContent: string, del: boolean) =>{
@@ -54,7 +54,7 @@ export const updateMediaById = async (mediaId: string, mediaTitle: string, seqNo
     });
 }
 
-export const postMedia = async (mediaContent: string, bucketName: string, seqNo: number, mediaTitle: string, mimeType: string, fileName?: string) =>{
+export const postMedia = async (mediaContent: string, bucketName: string, seqNo: number, mediaTitle: string, mimeType: string, mediaType: string, fileName?: string) =>{
     let key: string = uuidv4();
 
     if(!["image/jpg", "image/jpeg", "image/JPG", "image/JPEG", "text/plain"].includes(mimeType)){
@@ -69,6 +69,7 @@ export const postMedia = async (mediaContent: string, bucketName: string, seqNo:
 
     const media = new Media({
         mediaId: uuidv4(),
+        mediaType,
         mediaTitle: mediaTitle,
         sequenceNo: seqNo,
         mimeType,
